@@ -1,0 +1,441 @@
+<!-- Cajú AI Gift Finder · Componente embebido para WordPress -->
+<link href="https://fonts.googleapis.com/css2?family=Give+You+Glory&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+div#caju-gf *,div#caju-gf *::before,div#caju-gf *::after{box-sizing:border-box!important;margin:0!important;padding:0!important;float:none!important;letter-spacing:normal!important;text-transform:none!important}
+#caju-gf{
+  --cj-cream:#F3E8CC;--cj-blue:#1E40C4;--cj-red:#D5342A;
+  --cj-orange:#F96015;--cj-yellow:#E5A300;
+  --cj-dark:#2B2118;--cj-white:#FFFDF7;--cj-light:#FAF4E4;
+  font-family:'Poppins',sans-serif!important;color:var(--cj-dark)!important;
+  max-width:560px!important;margin:0 auto!important;-webkit-font-smoothing:antialiased;
+  line-height:normal!important;text-align:left!important;float:none!important;
+}
+
+/* === WELCOME (visible por defecto) === */
+.cj-welcome{text-align:center;padding:48px 24px 40px}
+.cj-w-logo{width:110px;height:110px;margin:0 auto 28px}
+.cj-w-logo img{width:100%;height:100%;object-fit:contain}
+.cj-w-tag{font-family:'Give You Glory',cursive;font-size:1.4rem;color:var(--cj-orange);margin-bottom:10px}
+.cj-w-sub{font-size:.92rem;font-weight:300;color:var(--cj-dark);opacity:.6;line-height:1.7;margin-bottom:40px;max-width:380px;margin-left:auto;margin-right:auto}
+.cj-w-btn{
+  font-family:'Poppins',sans-serif;font-weight:600;font-size:1rem;
+  background:var(--cj-orange);color:#fff;border:none;border-radius:50px;
+  padding:16px 40px;cursor:pointer;transition:transform .15s,box-shadow .15s;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.cj-w-btn:hover{box-shadow:0 8px 28px rgba(249,96,21,.3);transform:translateY(-1px)}
+.cj-w-btn:focus-visible{outline:3px solid var(--cj-blue);outline-offset:4px}
+
+/* === FLOW PANEL (oculto hasta clic) === */
+.cj-flow{
+  display:none;
+  background:var(--cj-white);border:1.5px solid var(--cj-cream);border-radius:24px;
+  padding:40px 36px 36px;
+  box-shadow:0 2px 24px rgba(43,33,24,.06);
+}
+.cj-flow.cj-open{display:block}
+
+/* Header mini */
+.cj-flow-head{display:flex;align-items:center;gap:12px;margin-bottom:32px;padding-bottom:20px;border-bottom:1.5px solid var(--cj-cream)}
+.cj-flow-logo{width:32px;height:32px;flex-shrink:0}
+.cj-flow-logo img{width:100%;height:100%;object-fit:contain}
+.cj-flow-title{font-size:.85rem;font-weight:600;color:var(--cj-orange)}
+
+/* Progress */
+.cj-prog{display:flex;gap:6px;margin-bottom:36px}
+.cj-prog-bar{flex:1;height:3px;border-radius:3px;background:var(--cj-cream);transition:background .3s}
+.cj-prog-bar.cj-on{background:var(--cj-orange)}
+
+/* Screens */
+.cj-s{display:none;animation:cj-in .35s ease}
+.cj-s.cj-act{display:block}
+@keyframes cj-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* Question */
+.cj-q{font-size:1.1rem;font-weight:600;line-height:1.5;margin-bottom:28px}
+.cj-q-hint{font-size:.8rem;font-weight:300;color:var(--cj-dark);opacity:.45;margin-top:6px}
+
+/* Chips */
+.cj-chips{display:flex;flex-wrap:wrap;gap:10px 10px;margin-bottom:28px}
+.cj-c{
+  font-family:'Poppins',sans-serif;font-size:.84rem;font-weight:400;
+  padding:10px 20px;border-radius:28px;
+  border:1.5px solid #e4dcc8;background:transparent;
+  color:var(--cj-dark);cursor:pointer;transition:all .15s;
+}
+.cj-c:hover{border-color:var(--cj-orange);color:var(--cj-orange)}
+.cj-c:focus-visible{outline:2px solid var(--cj-blue);outline-offset:2px}
+.cj-c[aria-pressed="true"]{background:var(--cj-orange);color:#fff;border-color:var(--cj-orange);font-weight:500}
+
+/* Input */
+.cj-inp{
+  font-family:'Poppins',sans-serif;font-size:.88rem;font-weight:300;
+  width:100%;padding:14px 18px;border:1.5px solid #e4dcc8;border-radius:14px;
+  background:transparent;color:var(--cj-dark);transition:border-color .15s;
+}
+.cj-inp:focus{outline:none;border-color:var(--cj-orange)}
+.cj-inp::placeholder{color:#c4b899;font-weight:300}
+
+/* Budget */
+.cj-budg{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.cj-cur{font-weight:600;font-size:.95rem;color:var(--cj-orange)}
+.cj-budg .cj-inp{flex:1}
+
+/* Buttons */
+.cj-btn{
+  font-family:'Poppins',sans-serif;font-weight:600;font-size:.86rem;
+  border:none;border-radius:28px;padding:12px 28px;cursor:pointer;
+  transition:all .15s;display:inline-flex;align-items:center;gap:6px;
+}
+.cj-btn:focus-visible{outline:2px solid var(--cj-blue);outline-offset:3px}
+.cj-btn:active{transform:scale(.97)}
+.cj-bp{background:var(--cj-orange);color:#fff}
+.cj-bp:hover{box-shadow:0 4px 16px rgba(249,96,21,.25)}
+.cj-bs{background:transparent;color:var(--cj-dark);opacity:.5;padding:12px 8px;font-weight:400;font-size:.82rem}
+.cj-bs:hover{opacity:1}
+
+/* Nav */
+.cj-nav{display:flex;align-items:center;justify-content:space-between;margin-top:12px}
+.cj-nav-r{display:flex;gap:8px}
+
+/* === RESULTS === */
+.cj-res-head{text-align:center;margin-bottom:32px}
+.cj-res-head h3{font-size:1.05rem;font-weight:600;margin-bottom:4px}
+.cj-res-head p{font-size:.8rem;font-weight:300;opacity:.45}
+
+/* Card */
+.cj-card{
+  border:1.5px solid var(--cj-cream);border-radius:18px;overflow:hidden;
+  margin-bottom:24px;background:var(--cj-white);transition:box-shadow .2s;
+}
+.cj-card:last-of-type{margin-bottom:28px}
+.cj-card:hover{box-shadow:0 6px 24px rgba(43,33,24,.08)}
+.cj-card-img{width:100%;aspect-ratio:4/3;overflow:hidden;background:var(--cj-cream)}
+.cj-card-img img{width:100%;height:100%;object-fit:cover;display:block}
+.cj-card-ph{
+  width:100%;aspect-ratio:4/3;
+  background:linear-gradient(145deg,#f7edd4,var(--cj-light));
+  display:flex;align-items:center;justify-content:center;
+}
+.cj-card-ph img{width:56px;height:56px;opacity:.25;object-fit:contain}
+.cj-card-bd{padding:24px 26px 28px}
+.cj-card-st{font-size:.72rem;font-weight:600;color:var(--cj-blue);letter-spacing:.04em;margin-bottom:6px}
+.cj-card-nm{font-size:1rem;font-weight:600;line-height:1.35;margin-bottom:6px}
+.cj-card-pr{font-size:.95rem;font-weight:700;color:var(--cj-orange);margin-bottom:14px}
+.cj-card-why{font-size:.82rem;font-weight:300;color:var(--cj-dark);opacity:.55;line-height:1.6;margin-bottom:20px}
+.cj-card-a{
+  font-family:'Poppins',sans-serif;font-weight:600;font-size:.82rem;
+  color:#fff;background:var(--cj-blue);padding:11px 24px;border-radius:28px;
+  text-decoration:none;display:inline-flex;align-items:center;gap:6px;
+  transition:background .15s;
+}
+.cj-card-a:hover{background:#162ea0}
+.cj-card-a:focus-visible{outline:2px solid var(--cj-orange);outline-offset:3px}
+
+/* Empty */
+.cj-empty{text-align:center;padding:40px 16px}
+.cj-empty-i{font-size:2.8rem;margin-bottom:16px}
+.cj-empty p{font-size:.88rem;font-weight:300;opacity:.5;line-height:1.6;margin-bottom:28px}
+
+/* Footer */
+.cj-foot{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;padding-top:4px}
+
+/* === RESPONSIVE === */
+@media(max-width:600px){
+  .cj-flow{padding:28px 22px 24px;border-radius:18px}
+  .cj-q{font-size:1rem}
+  .cj-card-bd{padding:20px 20px 22px}
+  .cj-welcome{padding:36px 16px 32px}
+  .cj-w-sub{font-size:.86rem}
+}
+
+/* === DIVI OVERRIDES === */
+div#caju-gf,div#caju-gf *{line-height:normal!important;letter-spacing:normal!important}
+div#caju-gf p{padding-bottom:0!important;margin-bottom:0!important}
+div#caju-gf h3{padding-bottom:0!important;margin-bottom:0!important;font-size:inherit!important;line-height:inherit!important}
+div#caju-gf a{color:inherit}
+div#caju-gf button{letter-spacing:normal!important;text-transform:none!important}
+div#caju-gf input{letter-spacing:normal!important}
+.et_pb_code_inner div#caju-gf{width:100%!important}
+.cj-welcome{padding:48px 24px 40px!important}
+.cj-w-logo{margin:0 auto 28px!important}
+.cj-w-tag{margin-bottom:10px!important;padding:0!important}
+.cj-w-sub{margin-bottom:40px!important;padding:0!important}
+.cj-q{margin-bottom:28px!important;padding:0!important}
+.cj-chips{margin-bottom:28px!important}
+.cj-card-bd{padding:24px 26px 28px!important}
+.cj-card-nm{margin-bottom:6px!important;padding:0!important}
+.cj-card-pr{margin-bottom:14px!important;padding:0!important}
+.cj-card-why{margin-bottom:20px!important;padding:0!important}
+.cj-card-st{margin-bottom:6px!important;padding:0!important}
+.cj-card-a{color:#fff!important;text-decoration:none!important}
+.cj-card-a:hover{color:#fff!important}
+.cj-flow-head{margin-bottom:32px!important;padding-bottom:20px!important}
+.cj-prog{margin-bottom:36px!important}
+.cj-res-head h3{padding:0!important;margin-bottom:4px!important}
+.cj-res-head p{padding:0!important;margin:0!important}
+div#caju-gf .cj-c{background:transparent!important;line-height:1.3!important}
+div#caju-gf .cj-c[aria-pressed="true"]{background:var(--cj-orange)!important;color:#fff!important}
+div#caju-gf .cj-inp{background:transparent!important}
+</style>
+
+<div id="caju-gf">
+
+  <!-- WELCOME -->
+  <div class="cj-welcome" id="cj-welcome">
+    <div class="cj-w-logo"><img src="" data-cj-logo="1" alt="Cajú – Paquete a Paquete" width="110" height="110"></div>
+    <p class="cj-w-tag">Encuentra el regalo perfecto</p>
+    <p class="cj-w-sub">Respondé unas preguntas rápidas y te recomendamos opciones reales de tiendas en Colombia, Ecuador y Venezuela.</p>
+    <button class="cj-w-btn" onclick="CJ.start()" aria-label="Comenzar a buscar un regalo">🎁 Encontrar un regalo</button>
+  </div>
+
+  <!-- FLOW -->
+  <div class="cj-flow" id="cj-flow">
+
+    <div class="cj-flow-head">
+      <div class="cj-flow-logo"><img src="" data-cj-logo="1" alt="" width="32" height="32"></div>
+      <span class="cj-flow-title">Cajú Gift Finder</span>
+    </div>
+
+    <!-- S1 País -->
+    <div class="cj-s cj-act" data-s="1">
+      <div class="cj-prog" id="cj-p1"></div>
+      <p class="cj-q">¿A qué país enviarás el regalo?</p>
+      <div class="cj-chips" id="cj-country" role="radiogroup" aria-label="País"></div>
+      <div class="cj-nav">
+        <button class="cj-bs cj-btn" onclick="CJ.back()">← Volver al inicio</button>
+        <div></div>
+      </div>
+    </div>
+
+    <!-- S2 Destinatario -->
+    <div class="cj-s" data-s="2">
+      <div class="cj-prog" id="cj-p2"></div>
+      <p class="cj-q">¿Para quién es el regalo?</p>
+      <div class="cj-chips" id="cj-recip" role="radiogroup" aria-label="Destinatario"></div>
+      <div class="cj-nav">
+        <button class="cj-bs cj-btn" onclick="CJ.go(1)">← Atrás</button>
+        <div></div>
+      </div>
+    </div>
+
+    <!-- S3 Ocasión -->
+    <div class="cj-s" data-s="3">
+      <div class="cj-prog" id="cj-p3"></div>
+      <p class="cj-q">¿Cuál es la ocasión?</p>
+      <div class="cj-chips" id="cj-occ" role="radiogroup" aria-label="Ocasión"></div>
+      <div class="cj-nav">
+        <button class="cj-bs cj-btn" onclick="CJ.go(2)">← Atrás</button>
+        <div></div>
+      </div>
+    </div>
+
+    <!-- S4 Presupuesto -->
+    <div class="cj-s" data-s="4">
+      <div class="cj-prog" id="cj-p4"></div>
+      <p class="cj-q">¿Cuál es tu presupuesto máximo?<span class="cj-q-hint">Solo te mostraremos opciones dentro de este rango.</span></p>
+      <div class="cj-budg">
+        <span class="cj-cur" id="cj-cur">USD</span>
+        <input class="cj-inp" type="number" id="cj-budg-inp" placeholder="Ej: 80" min="1" aria-label="Presupuesto máximo">
+      </div>
+      <div class="cj-nav">
+        <button class="cj-bs cj-btn" onclick="CJ.go(3)">← Atrás</button>
+        <div class="cj-nav-r"><button class="cj-btn cj-bp" onclick="CJ.setBudget()">Siguiente →</button></div>
+      </div>
+    </div>
+
+    <!-- S5 Intereses -->
+    <div class="cj-s" data-s="5">
+      <div class="cj-prog" id="cj-p5"></div>
+      <p class="cj-q">¿Qué le gusta o interesa?<span class="cj-q-hint">Seleccioná todas las que apliquen.</span></p>
+      <div class="cj-chips" id="cj-int" role="group" aria-label="Intereses"></div>
+      <input class="cj-inp" type="text" id="cj-int-txt" placeholder="¿Algo más? Escribilo aquí (opcional)" aria-label="Intereses adicionales" style="margin-top:8px;margin-bottom:28px">
+      <div class="cj-nav">
+        <button class="cj-bs cj-btn" onclick="CJ.go(4)">← Atrás</button>
+        <div class="cj-nav-r"><button class="cj-btn cj-bp" onclick="CJ.results()">Ver recomendaciones 🎁</button></div>
+      </div>
+    </div>
+
+    <!-- S6 Results -->
+    <div class="cj-s" data-s="6">
+      <div class="cj-res-head" id="cj-res-h"></div>
+      <div id="cj-res-list"></div>
+      <div class="cj-foot">
+        <button class="cj-bs cj-btn" onclick="CJ.go(5)">← Cambiar filtros</button>
+        <button class="cj-btn cj-bp" onclick="CJ.back()">Empezar de nuevo</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+var LOGO="data:image/webp;base64,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";
+
+var P=[
+{id:"CO-AB-01",co:"Colombia",st:"Agua Bendita",nm:"Top de Bikini Sunny",ds:"Top de bikini estampado.",pr:90000,cu:"COP",rc:["pareja","hermana","amiga"],oc:["cumpleaños","vacaciones","porque sí"],it:["playa","moda","viajes"],ur:"https://aguabendita.com.co/collections/sale-50-off",im:null},
+{id:"CO-AB-02",co:"Colombia",st:"Agua Bendita",nm:"Bottom de Bikini Aldana",ds:"Parte inferior de bikini estampado.",pr:85000,cu:"COP",rc:["pareja","hermana","amiga"],oc:["cumpleaños","vacaciones"],it:["playa","moda","viajes"],ur:"https://aguabendita.com.co/collections/sale-50-off",im:null},
+{id:"CO-AB-03",co:"Colombia",st:"Agua Bendita",nm:"Vestido Melina",ds:"Vestido resort con estampado de inspiración solar.",pr:215000,cu:"COP",rc:["pareja","madre","hermana","amiga"],oc:["cumpleaños","aniversario","celebración"],it:["moda","viajes","eventos"],ur:"https://aguabendita.com.co/collections/sale-50-off",im:null},
+{id:"CO-AB-04",co:"Colombia",st:"Agua Bendita",nm:"Nader Vestido Julia (Ivy)",ds:"Vestido con detalles artesanales de la línea Nader.",pr:590000,cu:"COP",rc:["pareja","madre","hermana"],oc:["aniversario","cumpleaños","ocasión especial"],it:["moda","artesanía","lujo"],ur:"https://aguabendita.com.co/collections/hecho-a-mano",im:null},
+{id:"CO-AB-05",co:"Colombia",st:"Agua Bendita",nm:"Nader Vestido de Baño Entero Posh (Ivy)",ds:"Vestido de baño entero con detalle artesanal.",pr:450000,cu:"COP",rc:["pareja","hermana","amiga"],oc:["aniversario","cumpleaños","vacaciones"],it:["playa","artesanía","moda"],ur:"https://aguabendita.com.co/collections/hecho-a-mano",im:null},
+{id:"CO-BA-01",co:"Colombia",st:"Baobab",nm:"Ada Maxi Dress (Brick Red)",ds:"Vestido largo de estilo resort en color rojo ladrillo.",pr:500000,cu:"COP",rc:["pareja","madre","hermana","amiga"],oc:["cumpleaños","boda","ocasión especial"],it:["moda","eventos","viajes"],ur:"https://baobab.com.co/products/ada-maxi-dress-brick-red",im:"https://baobab.com.co/cdn/shop/files/BAOBAB6454.webp?v=1778688077"},
+{id:"CO-BA-02",co:"Colombia",st:"Baobab",nm:"Agata Bikini Bottom (Neon Grove)",ds:"Parte inferior de bikini con estampado vibrante.",pr:110000,cu:"COP",rc:["pareja","hermana","amiga"],oc:["cumpleaños","vacaciones"],it:["playa","moda","color"],ur:"https://baobab.com.co/products/agata-bottom-neon-grove",im:"https://baobab.com.co/cdn/shop/files/b233copy_551b506b-0af9-483d-b325-d867806ba3d0.webp?v=1748435963"},
+{id:"CO-BA-03",co:"Colombia",st:"Baobab",nm:"Asaka One Piece (Ciocco Lavanda)",ds:"Vestido de baño entero estampado.",pr:400000,cu:"COP",rc:["pareja","hermana","amiga"],oc:["cumpleaños","vacaciones","aniversario"],it:["playa","moda","viajes"],ur:"https://baobab.com.co/products/asaka-one-piece-ciocco-lavanda",im:"https://baobab.com.co/cdn/shop/files/BAOBAB215495.webp?v=1776350560"},
+{id:"CO-BA-04",co:"Colombia",st:"Baobab",nm:"Ally Earrings (Affogato)",ds:"Pendientes llamativos de diseño.",pr:200000,cu:"COP",rc:["pareja","madre","hermana","amiga"],oc:["cumpleaños","Día de la Madre","porque sí"],it:["accesorios","moda","joyería"],ur:"https://baobab.com.co/products/ally-earrings-affogato",im:"https://baobab.com.co/cdn/shop/files/ALLYEARRINGSAFFOGATO1.1_6b18c98c-92fd-42e6-bcbb-1fe147327c0b.webp?v=1777584668"},
+{id:"CO-BA-05",co:"Colombia",st:"Baobab",nm:"Bosco Necklace (Verdi)",ds:"Collar de diseño en tono verde.",pr:370000,cu:"COP",rc:["pareja","madre","hermana","amiga"],oc:["aniversario","cumpleaños","Día de la Madre"],it:["accesorios","moda","joyería"],ur:"https://baobab.com.co/products/bosco-necklace-verdi",im:"https://baobab.com.co/cdn/shop/files/BOSCONECKLACEVERDI.webp?v=1777584712"},
+{id:"CO-08-01",co:"Colombia",st:"08MIL",nm:"Blazer Hamaca",ds:"Blazer estampado inspirado en Barranquilla.",pr:200000,cu:"COP",rc:["pareja","hermana","amiga"],oc:["cumpleaños","trabajo","celebración"],it:["moda","diseño colombiano","color"],ur:"https://cero8mil.com/products/blazer-hamaca",im:"https://cero8mil.com/cdn/shop/files/HAMACA2.jpg?v=1752160654"},
+{id:"CO-08-02",co:"Colombia",st:"08MIL",nm:"Blusa Campana",ds:"Blusa de corte campana.",pr:70000,cu:"COP",rc:["pareja","madre","hermana","amiga"],oc:["cumpleaños","porque sí"],it:["moda","ropa casual"],ur:"https://cero8mil.com/products/top-campana",im:"https://cero8mil.com/cdn/shop/files/MG_6034.jpg?v=1764616074"},
+{id:"CO-08-03",co:"Colombia",st:"08MIL",nm:"Blusa Cayena",ds:"Blusa estampada de colores vivos.",pr:450000,cu:"COP",rc:["pareja","madre","hermana","amiga"],oc:["cumpleaños","ocasión especial"],it:["moda","diseño colombiano","color"],ur:"https://cero8mil.com/products/blusa-cayena",im:"https://cero8mil.com/cdn/shop/files/FALDAYCAMISA8.jpg?v=1752162470"},
+{id:"CO-08-04",co:"Colombia",st:"08MIL",nm:"Camisa Baldosas del Atardecer",ds:"Camisa con estampado inspirado en baldosas.",pr:250000,cu:"COP",rc:["pareja","padre","madre","hermano","hermana","amigo","amiga"],oc:["cumpleaños","Navidad","porque sí"],it:["moda","diseño colombiano","arte"],ur:"https://cero8mil.com/products/camisa-baldosas-del-atardecer",im:"https://cero8mil.com/cdn/shop/files/IMG_9730.jpg?v=1770398333"},
+{id:"CO-08-05",co:"Colombia",st:"08MIL",nm:"Camisa Olas",ds:"Camisa calada con motivo de olas.",pr:180000,cu:"COP",rc:["pareja","padre","hermano","amigo"],oc:["cumpleaños","vacaciones","Navidad"],it:["playa","moda","ropa casual"],ur:"https://cero8mil.com/products/camisa-olas",im:"https://cero8mil.com/cdn/shop/files/CAMISADEOJALILLO1.jpg?v=1759437915"},
+{id:"EC-YU-01",co:"Ecuador",st:"Yumbos Chocolate",nm:"60% Chocolate Puro",ds:"Barra de chocolate ecuatoriano de 60% de cacao.",pr:5,cu:"USD",rc:["pareja","madre","padre","hermano","hermana","amigo","amiga"],oc:["cumpleaños","agradecimiento","porque sí"],it:["chocolate","gastronomía","productos locales"],ur:"https://yumboschocolate.com/web/?product=60-chocolate-puro",im:null},
+{id:"EC-YU-02",co:"Ecuador",st:"Yumbos Chocolate",nm:"70% Chocolate Puro",ds:"Barra de chocolate negro ecuatoriano de 70% de cacao.",pr:5,cu:"USD",rc:["pareja","madre","padre","hermano","hermana","amigo","amiga"],oc:["cumpleaños","agradecimiento","porque sí"],it:["chocolate negro","gastronomía","productos locales"],ur:"https://yumboschocolate.com/web/?product=70-chocolate-puro",im:null},
+{id:"EC-YU-03",co:"Ecuador",st:"Yumbos Chocolate",nm:"100% Chocolate Puro",ds:"Barra de cacao puro para amantes del chocolate intenso.",pr:5,cu:"USD",rc:["pareja","madre","padre","hermano","hermana","amigo","amiga"],oc:["cumpleaños","agradecimiento","porque sí"],it:["cacao puro","gastronomía","productos locales"],ur:"https://yumboschocolate.com/web/?product=100-chocolate-puro",im:null},
+{id:"EC-YU-04",co:"Ecuador",st:"Yumbos Chocolate",nm:"60% Chocolate con sabor de Café",ds:"Chocolate de 60% de cacao con sabor a café.",pr:5,cu:"USD",rc:["pareja","madre","padre","hermano","hermana","amigo","amiga"],oc:["cumpleaños","agradecimiento","Navidad"],it:["café","chocolate","gastronomía"],ur:"https://yumboschocolate.com/web/?product=60-chocolate-con-sabor-de-cafe",im:null},
+{id:"EC-YU-05",co:"Ecuador",st:"Yumbos Chocolate",nm:"60% Chocolate con Nibs de Cacao",ds:"Chocolate de 60% de cacao con nibs crujientes.",pr:5,cu:"USD",rc:["pareja","madre","padre","hermano","hermana","amigo","amiga"],oc:["cumpleaños","agradecimiento","Navidad"],it:["chocolate","texturas","gastronomía"],ur:"https://yumboschocolate.com/web/?product=60-chocolate-con-nibs-de-cacao",im:null},
+{id:"EC-SI-01",co:"Ecuador",st:"Sie7e",nm:"Jean Wide Leg para mujer",ds:"Jean de corte ancho para mujer.",pr:89,cu:"USD",rc:["pareja","madre","hermana","amiga"],oc:["cumpleaños","Navidad","porque sí"],it:["moda","denim","ropa casual"],ur:"https://sie7e.ec/mujer/ropa",im:null},
+{id:"EC-SI-02",co:"Ecuador",st:"Sie7e",nm:"Jean Straight Fit para mujer",ds:"Jean de corte recto para mujer.",pr:89,cu:"USD",rc:["pareja","madre","hermana","amiga"],oc:["cumpleaños","Navidad","porque sí"],it:["moda","denim","básicos"],ur:"https://sie7e.ec/mujer/ropa",im:null},
+{id:"EC-SI-03",co:"Ecuador",st:"Sie7e",nm:"Jean Skinny Fit para mujer",ds:"Jean de corte ajustado para mujer.",pr:85,cu:"USD",rc:["pareja","madre","hermana","amiga"],oc:["cumpleaños","Navidad","porque sí"],it:["moda","denim","ropa casual"],ur:"https://sie7e.ec/mujer/ropa",im:null},
+{id:"EC-SI-04",co:"Ecuador",st:"Sie7e",nm:"Camiseta Slim Fit para mujer",ds:"Camiseta de corte ajustado para mujer.",pr:45,cu:"USD",rc:["pareja","madre","hermana","amiga"],oc:["cumpleaños","porque sí"],it:["moda","básicos","ropa casual"],ur:"https://sie7e.ec/mujer/ropa",im:null},
+{id:"EC-SI-05",co:"Ecuador",st:"Sie7e",nm:"New Balance 574 para mujer",ds:"Zapatillas New Balance 574 vendidas por Sie7e.",pr:159,cu:"USD",rc:["pareja","madre","hermana","amiga"],oc:["cumpleaños","Navidad","ocasión especial"],it:["zapatillas","moda","deporte"],ur:"https://sie7e.ec/ver-todo",im:null},
+{id:"EC-KO-01",co:"Ecuador",st:"KOAJ",nm:"Vestido corto negro con puntos y cinturón",ds:"Vestido corto negro estampado con cinturón.",pr:28.99,cu:"USD",rc:["pareja","hermana","amiga"],oc:["cumpleaños","salida","porque sí"],it:["moda","vestidos","estampados"],ur:"https://koaj.ec/mujer/ropa/vestidos/",im:"https://koaj.ec/c/302-category_default/vestidos.jpg"},
+{id:"EC-KO-02",co:"Ecuador",st:"KOAJ",nm:"Vestido corto verde con animal print",ds:"Vestido corto verde con estampado animal.",pr:28.99,cu:"USD",rc:["pareja","hermana","amiga"],oc:["cumpleaños","salida","porque sí"],it:["moda","vestidos","animal print"],ur:"https://koaj.ec/mujer/ropa/vestidos/",im:"https://koaj.ec/c/302-category_default/vestidos.jpg"},
+{id:"EC-KO-03",co:"Ecuador",st:"KOAJ",nm:"Vestido corto verde oscuro con cuello nerú",ds:"Vestido corto estampado con cuello nerú.",pr:28.99,cu:"USD",rc:["pareja","madre","hermana","amiga"],oc:["cumpleaños","salida","porque sí"],it:["moda","vestidos","estampados"],ur:"https://koaj.ec/mujer/ropa/vestidos/",im:"https://koaj.ec/c/302-category_default/vestidos.jpg"},
+{id:"EC-KO-04",co:"Ecuador",st:"KOAJ",nm:"Vestido negro medio manga corta",ds:"Vestido negro de largo medio y manga corta.",pr:14.99,cu:"USD",rc:["pareja","madre","hermana","amiga"],oc:["cumpleaños","trabajo","porque sí"],it:["moda","vestidos","básicos"],ur:"https://koaj.ec/mujer/ropa/vestidos/",im:"https://koaj.ec/c/302-category_default/vestidos.jpg"},
+{id:"EC-KO-05",co:"Ecuador",st:"KOAJ",nm:"Jean jegging negro tiro alto",ds:"Jean jegging negro de tiro alto.",pr:27.99,cu:"USD",rc:["pareja","madre","hermana","amiga"],oc:["cumpleaños","Navidad","porque sí"],it:["moda","denim","ropa casual"],ur:"https://koaj.ec/mujer/ropa/vestidos/",im:"https://koaj.ec/c/302-category_default/vestidos.jpg"},
+{id:"VE-CO-01",co:"Venezuela",st:"Covas",nm:"COSRX Advanced Snail Hydrogel Eye Patch",ds:"Parches de hidrogel para el contorno de ojos.",pr:21,cu:"USD",rc:["pareja","madre","hermana","amiga"],oc:["cumpleaños","Día de la Madre","autocuidado"],it:["skincare","belleza","autocuidado"],ur:"https://covasve.com/tienda/cosrx-advanced-snail-hydrogel-eye-patch/",im:"https://covasve.com/wp-content/uploads/2026/08/PNG-Skincare-COSRX-1-680x920.png"},
+{id:"VE-CO-02",co:"Venezuela",st:"Covas",nm:"COSRX The Vitamin C 23 Serum",ds:"Sérum facial con vitamina C.",pr:20,cu:"USD",rc:["pareja","madre","hermana","amiga"],oc:["cumpleaños","Día de la Madre","autocuidado"],it:["skincare","belleza","autocuidado"],ur:"https://covasve.com/tienda/cosrx-the-vitamin-c-23-serum/",im:"https://covasve.com/wp-content/uploads/2026/08/PNG-Skincare-COSRX-6-1-680x920.png"},
+{id:"VE-CO-03",co:"Venezuela",st:"Covas",nm:"LILYBYRED Bloody Liar Coating Tint #06",ds:"Tinte labial en tono Rosy Strawberry.",pr:10,cu:"USD",rc:["pareja","madre","hermana","amiga"],oc:["cumpleaños","Navidad","porque sí"],it:["maquillaje","belleza","k-beauty"],ur:"https://covasve.com/tienda/bloody-liar-coating-tint-06-rosy-stranwberry/",im:"https://covasve.com/wp-content/uploads/2025/06/PNG-Skincare-Lilybyred-2-680x920.png"},
+{id:"VE-CO-04",co:"Venezuela",st:"Covas",nm:"LILYBYRED Luv Beam Cheek Balm #06",ds:"Bálsamo colorete en tono melocotón.",pr:12,cu:"USD",rc:["pareja","madre","hermana","amiga"],oc:["cumpleaños","Navidad","porque sí"],it:["maquillaje","belleza","k-beauty"],ur:"https://covasve.com/tienda/luv-beam-cheek-balm-06-fluffy-peach/",im:"https://covasve.com/wp-content/uploads/2025/06/PNG-Skincare-Lilybyred-1-680x920.png"},
+{id:"VE-CO-05",co:"Venezuela",st:"Covas",nm:"Jean recto negro con tachas",ds:"Jean negro recto decorado con tachas.",pr:59.99,cu:"USD",rc:["pareja","hermana","amiga"],oc:["cumpleaños","Navidad","porque sí"],it:["moda","denim","tendencias"],ur:"https://covasve.com/tienda/denim-recto-negro-con-tachas/",im:"https://covasve.com/wp-content/uploads/2026/05/IMG_9531-680x920.jpeg"},
+{id:"VE-CO-06",co:"Venezuela",st:"Covas",nm:"Jean barrell prelavado con estrellas",ds:"Jean barrel prelavado con estrellas.",pr:59.99,cu:"USD",rc:["pareja","hermana","amiga"],oc:["cumpleaños","Navidad"],it:["moda","denim","diseños llamativos"],ur:"https://covasve.com/tienda/denim-barrell-prelavado-con-estrellas/",im:"https://covasve.com/wp-content/uploads/2026/05/IMG_9701-680x920.jpeg"},
+{id:"VE-CO-07",co:"Venezuela",st:"Covas",nm:"Jean wide leg negro con bordados brillantes",ds:"Jean negro de pierna ancha con bordados brillantes.",pr:74.99,cu:"USD",rc:["pareja","hermana","amiga"],oc:["cumpleaños","ocasión especial"],it:["moda","denim","brillos"],ur:"https://covasve.com/tienda/denim-wide-leg-nrego-bordado/",im:"https://covasve.com/wp-content/uploads/2026/05/IMG_9400-680x920.jpeg"},
+{id:"VE-CO-08",co:"Venezuela",st:"Covas",nm:"Mini vestido manga larga de insectos",ds:"Mini vestido estampado de manga larga.",pr:65,cu:"USD",rc:["pareja","hermana","amiga"],oc:["cumpleaños","salida","ocasión especial"],it:["moda","estampados","diseño venezolano"],ur:"https://covasve.com/tienda/mini-vestido-manga-larga-de-insectos/",im:"https://covasve.com/wp-content/uploads/2026/04/IMG_9253-680x920.jpeg"},
+{id:"VE-CO-09",co:"Venezuela",st:"Covas",nm:"Vestido Doña Barbara",ds:"Vestido de diseño venezolano de la línea Doña Bárbara.",pr:70,cu:"USD",rc:["pareja","madre","hermana","amiga"],oc:["cumpleaños","ocasión especial","Día de la Madre"],it:["moda","cultura venezolana","diseño local"],ur:"https://covasve.com/tienda/vestido-dona-barbara-2/",im:"https://covasve.com/wp-content/uploads/2026/02/IMG_9436-680x920.jpeg"},
+{id:"VE-CO-10",co:"Venezuela",st:"Covas",nm:"Vestido corto periódico vintage venezolano",ds:"Vestido corto con estampado inspirado en periódicos venezolanos.",pr:59.99,cu:"USD",rc:["pareja","madre","hermana","amiga"],oc:["cumpleaños","ocasión especial"],it:["moda","cultura venezolana","vintage"],ur:"https://covasve.com/tienda/vestido-corto-periodico-vintage-venezolano/",im:"https://covasve.com/wp-content/uploads/2025/11/IMG_9391-680x920.jpeg"},
+{id:"VE-CO-11",co:"Venezuela",st:"Covas",nm:"Franela ¡Sin miedo al éxito!",ds:"Franela estampada con frase motivacional.",pr:49.99,cu:"USD",rc:["pareja","madre","padre","hermano","hermana","amigo","amiga"],oc:["cumpleaños","Navidad","porque sí"],it:["moda","frases","cultura venezolana"],ur:"https://covasve.com/tienda/franela-sin-miedo-al-exito/",im:"https://covasve.com/wp-content/uploads/2026/05/IMG_9474-1-680x920.jpeg"},
+{id:"VE-CO-12",co:"Venezuela",st:"Covas",nm:"Franela ¡El corazón Tucun, Tucun!",ds:"Franela estampada con frase de tono afectivo.",pr:49.99,cu:"USD",rc:["pareja","madre","padre","hermano","hermana","amigo","amiga"],oc:["cumpleaños","aniversario","porque sí"],it:["moda","frases","cultura venezolana"],ur:"https://covasve.com/tienda/franela-el-corazon-tucun-tucun/",im:"https://covasve.com/wp-content/uploads/2026/05/IMG_9845-680x920.jpeg"},
+{id:"VE-CO-13",co:"Venezuela",st:"Covas",nm:"Bucket tote dorado con tarjetero",ds:"Bolso bucket dorado con tarjetero y porta maquillaje.",pr:65,cu:"USD",rc:["pareja","madre","hermana","amiga"],oc:["cumpleaños","Navidad","Día de la Madre"],it:["bolsos","moda","accesorios"],ur:"https://covasve.com/tienda/bucket-tote-con-tarjetero-y-porta-maquillaje-dorado-envios-internacionales/",im:"https://covasve.com/wp-content/uploads/2025/10/84318874-94db-45f3-b47c-2cb43721e778-680x920.jpg"},
+{id:"VE-CO-14",co:"Venezuela",st:"Covas",nm:"Tote bag tejido vegan leather marrón",ds:"Bolso tote tejido en cuero vegano marrón.",pr:85,cu:"USD",rc:["pareja","madre","hermana","amiga"],oc:["cumpleaños","Navidad","Día de la Madre"],it:["bolsos","moda","accesorios"],ur:"https://covasve.com/tienda/tote-bag-tejido-vegan-leather-marron-envios-internacionales/",im:"https://covasve.com/wp-content/uploads/2026/07/a87fd82f-5470-471c-a15a-b2843fc82fd2-680x920.jpg"},
+{id:"VE-CO-15",co:"Venezuela",st:"Covas",nm:"Bolsa Hobo mediana vinotinto",ds:"Bolso hobo mediano color vinotinto con remaches.",pr:65,cu:"USD",rc:["pareja","madre","hermana","amiga"],oc:["cumpleaños","Navidad","porque sí"],it:["bolsos","moda","accesorios"],ur:"https://covasve.com/tienda/bolsa-hobo-mediana-de-remaches-vinotinto-envios-internacionales/",im:"https://covasve.com/wp-content/uploads/2026/07/d62bf8e1-e921-4b9a-8c2c-506ab28a26bd-680x920.jpg"}
+];
+
+var COUNTRIES=["Colombia","Ecuador","Venezuela"];
+var RECIPS=["pareja","madre","padre","hermano","hermana","amigo","amiga"];
+var OCCS=["cumpleaños","aniversario","Navidad","Día de la Madre","vacaciones","porque sí","ocasión especial","agradecimiento","boda","trabajo","salida","autocuidado","celebración"];
+var INTS=["moda","playa","chocolate","belleza","skincare","maquillaje","accesorios","joyería","bolsos","denim","viajes","gastronomía","arte","deporte","ropa casual","diseño colombiano","cultura venezolana","k-beauty","café","lujo"];
+
+var S={country:null,recip:null,occ:null,budget:null,ints:[],intsTxt:""};
+
+function esc(s){var d=document.createElement("span");d.textContent=s;return d.innerHTML}
+function fmt(p,c){if(c==="COP")return new Intl.NumberFormat("es-CO",{style:"currency",currency:"COP",minimumFractionDigits:0,maximumFractionDigits:0}).format(p);return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",minimumFractionDigits:p%1?2:0}).format(p)}
+
+function chips(id,items,cb,multi){
+  var el=document.getElementById(id);el.innerHTML="";
+  items.forEach(function(v){
+    var b=document.createElement("button");b.type="button";b.className="cj-c";
+    b.textContent=v.charAt(0).toUpperCase()+v.slice(1);
+    b.setAttribute("role",multi?"checkbox":"radio");b.setAttribute("aria-pressed","false");
+    b.addEventListener("click",function(){
+      if(multi){var on=b.getAttribute("aria-pressed")==="true";b.setAttribute("aria-pressed",on?"false":"true");cb(v,!on)}
+      else{var all=el.querySelectorAll(".cj-c");for(var i=0;i<all.length;i++)all[i].setAttribute("aria-pressed","false");b.setAttribute("aria-pressed","true");cb(v)}
+    });el.appendChild(b);
+  });
+}
+
+function bars(step){for(var i=1;i<=5;i++){var el=document.getElementById("cj-p"+i);if(el){el.innerHTML="";for(var j=1;j<=5;j++){var d=document.createElement("div");d.className="cj-prog-bar";if(j<=step)d.classList.add("cj-on");el.appendChild(d)}}}}
+
+var CJ={
+  start:function(){
+    document.getElementById("cj-welcome").style.display="none";
+    var fl=document.getElementById("cj-flow");fl.classList.add("cj-open");
+    this.go(1);
+  },
+  back:function(){
+    document.getElementById("cj-flow").classList.remove("cj-open");
+    document.getElementById("cj-welcome").style.display="";
+    S={country:null,recip:null,occ:null,budget:null,ints:[],intsTxt:""};
+  },
+  go:function(n){
+    var all=document.querySelectorAll("#caju-gf .cj-s");
+    for(var i=0;i<all.length;i++)all[i].classList.remove("cj-act");
+    var t=document.querySelector('#caju-gf [data-s="'+n+'"]');if(t)t.classList.add("cj-act");
+    bars(n);
+    var gf=document.getElementById("caju-gf");if(gf)gf.scrollIntoView({behavior:"smooth",block:"start"});
+    if(n===1)this._co();if(n===2)this._rc();if(n===3)this._oc();if(n===4)this._bu();if(n===5)this._it();
+  },
+  _co:function(){chips("cj-country",COUNTRIES,function(v){S.country=v;setTimeout(function(){CJ.go(2)},220)},false)},
+  _rc:function(){chips("cj-recip",RECIPS,function(v){S.recip=v;setTimeout(function(){CJ.go(3)},220)},false)},
+  _oc:function(){chips("cj-occ",OCCS,function(v){S.occ=v;setTimeout(function(){CJ.go(4)},220)},false)},
+  _bu:function(){
+    document.getElementById("cj-cur").textContent=S.country==="Colombia"?"COP":"USD";
+    var inp=document.getElementById("cj-budg-inp");inp.value="";inp.placeholder=S.country==="Colombia"?"Ej: 300000":"Ej: 80";
+    setTimeout(function(){inp.focus()},120);
+  },
+  setBudget:function(){
+    var inp=document.getElementById("cj-budg-inp"),v=parseFloat(inp.value);
+    if(!v||v<=0){inp.style.borderColor="var(--cj-red)";inp.focus();return}
+    inp.style.borderColor="";S.budget=v;this.go(5);
+  },
+  _it:function(){
+    S.ints=[];
+    chips("cj-int",INTS,function(v,on){if(on)S.ints.push(v);else S.ints=S.ints.filter(function(x){return x!==v})},true);
+    document.getElementById("cj-int-txt").value="";
+  },
+  results:function(){
+    S.intsTxt=(document.getElementById("cj-int-txt").value||"").trim();
+    var res=this._search();this.go(6);
+    var list=document.getElementById("cj-res-list"),h=document.getElementById("cj-res-h");
+    list.innerHTML="";
+    if(!res.length){h.innerHTML="";list.innerHTML='<div class="cj-empty"><div class="cj-empty-i">😕</div><p>No encontramos productos con estos filtros.<br>Probá con otro presupuesto o cambiá algún criterio.</p></div>';return}
+    h.innerHTML='<h3>Nuestras recomendaciones</h3><p>Basadas en tus respuestas</p>';
+    res.forEach(function(p){list.appendChild(CJ._card(p))});
+  },
+  _search:function(){
+    var pool=P.filter(function(p){return p.co===S.country&&p.pr<=S.budget});
+    if(!pool.length)return[];
+    var extra=[];if(S.intsTxt)extra=S.intsTxt.toLowerCase().split(/[\s,;]+/).filter(function(w){return w.length>2});
+    var all=S.ints.map(function(x){return x.toLowerCase()}).concat(extra);
+    pool.forEach(function(p){
+      var sc=0;
+      if(S.recip&&p.rc.indexOf(S.recip)>-1)sc+=3;
+      if(S.occ&&p.oc.indexOf(S.occ)>-1)sc+=3;
+      var im=0;
+      all.forEach(function(w){var f=false;p.it.forEach(function(pi){if(pi.toLowerCase().indexOf(w)>-1)f=true});if(!f&&(p.ds.toLowerCase().indexOf(w)>-1||p.nm.toLowerCase().indexOf(w)>-1))f=true;if(f)im++});
+      if(all.length)sc+=Math.round(im/all.length*4*100)/100;
+      p._sc=sc;p._r=Math.random();
+    });
+    pool.sort(function(a,b){return b._sc-a._sc||a._r-b._r});
+    return pool.slice(0,3);
+  },
+  _card:function(p){
+    var c=document.createElement("div");c.className="cj-card";
+    var imgH;
+    if(p.im){imgH='<div class="cj-card-img"><img src="'+esc(p.im)+'" alt="'+esc(p.nm)+'" loading="lazy" onerror="this.parentElement.innerHTML=\'<div class=cj-card-ph><img src=&quot;'+LOGO+'&quot; alt=&quot;&quot; width=56 height=56></div>\'"></div>'}
+    else{imgH='<div class="cj-card-ph"><img src="'+LOGO+'" alt="" width="56" height="56"></div>'}
+    var why=this._why(p);
+    c.innerHTML=imgH+'<div class="cj-card-bd"><p class="cj-card-st">'+esc(p.st)+'</p><h3 class="cj-card-nm">'+esc(p.nm)+'</h3><p class="cj-card-pr">'+esc(fmt(p.pr,p.cu))+'</p><p class="cj-card-why">'+esc(why)+'</p><a class="cj-card-a" href="'+esc(p.ur)+'" target="_blank" rel="noopener noreferrer">Ver en la tienda ↗</a></div>';
+    return c;
+  },
+  _why:function(p){
+    var r=[];
+    if(S.recip&&p.rc.indexOf(S.recip)>-1)r.push("Ideal para "+S.recip);
+    if(S.occ&&p.oc.indexOf(S.occ)>-1)r.push("perfecto para "+S.occ);
+    var m=[];S.ints.forEach(function(i){p.it.forEach(function(pi){if(pi.toLowerCase().indexOf(i.toLowerCase())>-1&&m.indexOf(i)===-1)m.push(i)})});
+    if(m.length)r.push("encaja con "+m.slice(0,2).join(" y "));
+    if(!r.length)r.push("Buena opción dentro de tu presupuesto");
+    return r.join(". ")+". "+p.ds;
+  }
+};
+window.CJ=CJ;
+
+// Set all logo images on load
+document.addEventListener("DOMContentLoaded",function(){
+  var imgs=document.querySelectorAll('[data-cj-logo]');
+  for(var i=0;i<imgs.length;i++)imgs[i].src=LOGO;
+});
+})();
+</script>
